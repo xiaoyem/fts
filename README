@@ -1,3 +1,6 @@
 
 Exercises for Analysis of Financial Time Series, 3rd
 
+To run R scripts, type like this:
+	Rscript c1/1-1.R
+
