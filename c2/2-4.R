@@ -15,20 +15,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require(fBasics)
-
-da = read.table("data/d-caus.txt", header = T)
-caus = diff(log(da$rate))
-basicStats(caus)
-da = read.table("data/d-useu.txt", header = T)
-useu = diff(log(da$Value))
-basicStats(useu)
-da = read.table("data/d-jpus.txt", header = T)
-jpus = diff(log(da$value))
-basicStats(jpus)
-da = read.table("data/d-usuk.txt", header = T)
-usuk = diff(log(da$value))
-basicStats(usuk)
-d = density(useu)
-plot(d$x, d$y, type = 'l', xlab = 'log-rtn', ylab = 'density')
+da = read.table("data/m-deciles08.txt", header = T)
+d2  = da[, 3]
+d10 = da[, 5]
+Box.test(d2,  lag = 12, type = 'Ljung')
+Box.test(d10, lag = 12, type = 'Ljung')
+plot(ts(d2, start = c(1970, 1), frequency = 12), xlab = 'year', ylab = 'decile2')
+acf(d2)
+m1 = arima(d2, order = c(0, 0, 1))
+m1
+tsdiag(m1, gof = 12)
+predict(m1, 12)
 
