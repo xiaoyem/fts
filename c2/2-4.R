@@ -20,7 +20,7 @@ d2  = da[, 3]
 d10 = da[, 5]
 Box.test(d2,  lag = 12, type = 'Ljung')
 Box.test(d10, lag = 12, type = 'Ljung')
-plot(ts(d2, start = c(1970, 1), frequency = 12), xlab = 'year', ylab = 'decile2')
+plot(ts(d2, start = c(1970, 1), frequency = 12), xlab = 'year', ylab = 'd2')
 acf(d2)
 m1 = arima(d2, order = c(0, 0, 1))
 m1
