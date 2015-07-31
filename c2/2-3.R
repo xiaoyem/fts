@@ -21,6 +21,8 @@ plot(ts(rate, start = c(1948, 1), frequency = 12), type = 'o', xlab = 'year', yl
 acf(rate)
 acf(diff(rate))
 pacf(diff(rate))
+acf(diff(rate, 12))
+pacf(diff(rate, 12))
 cat("order =", ar(rate, method = 'mle')$order, "\n")
 m1 = arima(rate, order = c(11, 0, 0))
 m1

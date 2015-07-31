@@ -30,6 +30,8 @@ summary(m1)
 Box.test(m1$residuals, lag = 12, type = 'Ljung')
 acf(ew)
 pacf(ew)
+acf(diff(ew, 5))
+pacf(diff(ew, 5))
 m2 = arima(ew, order = c(2, 0, 2), seasonal = list(order = c(1, 0, 0), period = 5), xreg = da[, 8:11])
 m2
 tsdiag(m2, gof = 20)
