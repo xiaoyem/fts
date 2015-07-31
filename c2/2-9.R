@@ -15,9 +15,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+require(xts)
+
 da = read.table("data/d-ibm3dxwkdays8008.txt", header = T)
 ibm = da$ibm * 100
-plot(ibm, type = 'l')
+plot(xts(ibm, order.by = as.Date(paste(da$year, da$mom, da$day, sep = '-'))),
+	type = 'l', main = '', xlab = 'date', ylab = 'ibm')
 M = da$M
 T = da$T
 W = da$W
