@@ -19,6 +19,7 @@ da = read.table("data/m-unrate.txt", header = T)
 rate = da[, 4]
 plot(ts(rate, start = c(1948, 1), frequency = 12), type = 'o', xlab = 'year', ylab = 'rate')
 acf(rate)
+par(mfrow = c(2, 1))
 acf(diff(rate))
 pacf(diff(rate))
 acf(diff(rate, 12))

@@ -29,9 +29,9 @@ F = da$F
 m1 = lm(ibm ~ 0 + M + T + W + R + F)
 summary(m1)
 Box.test(m1$residuals, lag = 12, type = 'Ljung')
+par(mfrow = c(2, 1))
 acf(m1$residuals)
-acf(ibm)
-pacf(ibm)
+pacf(m1$residuals)
 m2 = arima(ibm, order = c(0, 0, 1), xreg = da[, 8:12], include.mean = F)
 m2
 Box.test(m2$residuals, lag = 12, type = 'Ljung')

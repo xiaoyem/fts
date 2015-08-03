@@ -18,6 +18,7 @@
 da = read.table("data/power6.txt", header = F)
 pow = da[, 1]
 plot(pow, type = 'o', ylab = 'pow')
+par(mfrow = c(2, 1))
 acf(pow)
 pacf(pow)
 acf(diff(pow))
