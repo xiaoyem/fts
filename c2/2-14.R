@@ -1,0 +1,20 @@
+require(TSA)
+require(fBasics)
+require(timeSeries)
+da=read.table('sp5may.dat',header=T)
+f=da[,1]
+ f=as.character(f)
+ f=as.numeric(f)
+ s=da[,2]
+ s=as.character(s)
+ s=as.numeric(s)
+ y1=100*y
+ x1=100*x
+ m2=lm(y1~x1)
+ m2
+ Box.test(m2$residuals,lag=10,type='Ljung')
+
+ eacf(m2$residuals)
+ x1=as.matrix(x1)
+ m3=arima(x=y1,order=c(1,0,1),xreg=x1,include.mean=F)
+ m3
