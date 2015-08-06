@@ -16,7 +16,10 @@
 #
 
 require(xts)
-
+require(fBasics)
+require(timeSeries)
+require(sandwich)
+require(lmtest)
 da = read.table("data/d-ibm3dxwkdays8008.txt", header = T)
 ew = da$ew * 100
 plot(xts(ew, order.by = as.Date(paste(da$year, da$mom, da$day, sep = '-'))),
@@ -33,6 +36,9 @@ acf(m1$residuals)
 pacf(m1$residuals)
 acf(diff(m1$residuals, 5))
 pacf(diff(m1$residuals, 5))
+nw=NeweyWest(m1,lag=12,prewhite=FALSE,verbose=T,adjust=T)
+coeftest(m1,nw)
+
 m2 = arima(ew, order = c(2, 0, 2), seasonal = list(order = c(1, 0, 0), period = 5), xreg = da[, 8:11])
 m2
 tsdiag(m2, gof = 20)
