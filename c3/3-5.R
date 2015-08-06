@@ -15,17 +15,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require(TSA)
+require(xts)
+require(fGarch)
 
-da = read.table("data/sp5may.dat", header = T)
-y = diff(da[, 1]) * 100
-x = diff(da[, 2]) * 100
-cat("correlation =", cor(y, x), "\n")
-m1 = lm(y ~ x)
+da = read.table("data/m-intc7308.txt", header = T)
+lrtn = log(1 + da[, 2])
+plot(xts(lrtn, order.by = as.Date(paste(substr(da[, 1], 1, 4), substr(da[, 1], 5, 6), substring(da[, 1], 7),
+	sep = '-'))), type = 'l', main = '', xlab = 'date', ylab = 'lrtn')
+m1 = garchFit(~ garch(1, 1), data = lrtn, trace = F)
 summary(m1)
-Box.test(m1$residuals, lag = 10, type = 'Ljung')
-eacf(m1$residuals)
-m2 = arima(y, order = c(1, 0, 1), xreg = x, include.mean = F)
-m2
-Box.test(m2$residuals, lag = 10, type = 'Ljung')
+m2 = garchFit(~ garch(1, 1), data = lrtn, cond.dist = 'std', trace = F)
+summary(m2)
+Box.test(m2@residuals, lag = 10, type = 'Ljung')
+predict(m2, 5)
 
