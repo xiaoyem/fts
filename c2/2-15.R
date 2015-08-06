@@ -26,8 +26,7 @@ acf(diff(y))
 pacf(diff(y))
 m1 = arima(diff(y), order = c(2, 0, 1))
 m1
-par(mfrow = c(1, 1))
-acf(m1$residuals)
+tsdiag(m1, gof = 20)
 m2 = arima(diff(y), order = c(2, 0, 1), seasonal = list(order = c(0, 0, 1), period = 7))
 m2
 tsdiag(m2, gof = 20)
