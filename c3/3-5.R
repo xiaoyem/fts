@@ -19,12 +19,12 @@ require(xts)
 require(fGarch)
 
 da = read.table("data/m-intc7308.txt", header = T)
-lrtn = log(1 + da[, 2])
-plot(xts(lrtn, order.by = as.Date(paste(substr(da[, 1], 1, 4), substr(da[, 1], 5, 6), substring(da[, 1], 7),
-	sep = '-'))), type = 'l', main = '', xlab = 'date', ylab = 'lrtn')
-m1 = garchFit(~ garch(1, 1), data = lrtn, trace = F)
+intc = log(1 + da[, 2])
+plot(xts(intc, order.by = as.Date(paste(substr(da[, 1], 1, 4), substr(da[, 1], 5, 6), substring(da[, 1], 7),
+	sep = '-'))), type = 'l', main = '', xlab = 'date', ylab = 'intc')
+m1 = garchFit(~ garch(1, 1), data = intc, trace = F)
 summary(m1)
-m2 = garchFit(~ garch(1, 1), data = lrtn, cond.dist = 'std', trace = F)
+m2 = garchFit(~ garch(1, 1), data = intc, cond.dist = 'std', trace = F)
 summary(m2)
 Box.test(m2@residuals, lag = 10, type = 'Ljung')
 predict(m2, 5)

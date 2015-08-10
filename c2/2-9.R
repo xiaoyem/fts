@@ -26,7 +26,7 @@ T = da$T
 W = da$W
 R = da$R
 F = da$F
-m1 = lm(ibm ~ 0 + M + T + W + R + F)
+m1 = lm(ibm ~ M + T + W + R + F + 0)
 summary(m1)
 Box.test(m1$residuals, lag = 12, type = 'Ljung')
 par(mfrow = c(2, 1))

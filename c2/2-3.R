@@ -15,17 +15,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require(fBasics)
-require(fUnitRoots)
 da = read.table("data/m-unrate.txt", header = T)
 rate = da[, 4]
 plot(ts(rate, start = c(1948, 1), frequency = 12), type = 'o', xlab = 'year', ylab = 'rate')
-rate=as.character(rate)
-rate=as.numeric(rate)
-m0=ar(rate,method='mle')
-m0$order
-adfTest(rate,lags=12,type=c("c"))
-adfTest(diff(rate),lags=11,type=("nc"))
 acf(rate)
 par(mfrow = c(2, 1))
 acf(diff(rate))
@@ -43,3 +35,4 @@ tsdiag(m1, gof = 36)
 tsdiag(m2, gof = 36)
 predict(m1, 4)
 predict(m2, 4)
+
