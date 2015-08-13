@@ -14,16 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-require(fBasics)
-require(fUnitRoots)
+
 da = read.table("data/power6.txt", header = F)
 pow = da[, 1]
 plot(pow, type = 'o', ylab = 'pow')
 par(mfrow = c(2, 1))
-m0=ar(pow,method='mle')
-adfTest(pow,lags=m0$order,type=c("ct"))
-m02=ar(diff(pow),method='mle')
-adfTest(diff(pow),lags=m02$order,type=c("nc"))
 acf(pow)
 pacf(pow)
 acf(diff(pow))
@@ -36,3 +31,4 @@ m1 = arima(pow, order = c(0, 1, 1), seasonal = list(order = c(0, 1, 1), period =
 m1
 tsdiag(m1, gof = 36)
 predict(m1, 24)
+
