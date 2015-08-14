@@ -16,14 +16,16 @@
 #
 
 require(xts)
-require(rugarch)
+require(fGarch)
 
-da = read.table("data/m-gmsp5008.txt", header = T)
+da = read.table("data/d-gmsp9908.txt", header = T)
 gm = log(1 + da[, 2])
 plot(xts(gm, order.by = as.Date(paste(substr(da[, 1], 1, 4), substr(da[, 1], 5, 6), substring(da[, 1], 7),
 	sep = '-'))), type = 'l', main = '', xlab = 'date', ylab = 'gm')
-m1 = ugarchfit(ugarchspec(variance.model = list(model = "gjrGARCH", garchOrder = c(1, 1)),
-	mean.model = list(armaOrder = c(0, 0))), gm)
-show(m1)
-ugarchforecast(m1, n.ahead = 6)
+Box.test(gm ^ 2, lag = 10, type = 'Ljung')
+pacf(gm ^ 2, 10)
+m1 = garchFit(~ garch(1, 1), data = gm, trace = F)
+summary(m1)
+m2 = garchFit(~ garch(1, 1), data = gm, cond.dist = "ged", trace = F)
+summary(m2)
 
