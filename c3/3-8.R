@@ -19,27 +19,24 @@ require(xts)
 require(fGarch)
 require(rugarch)
 
-da = read.table("data/m-3m4608.txt", header = T)
-mmm = log(1 + da[, 2])
-plot(xts(mmm, order.by = as.Date(paste(substr(da[, 1], 1, 4), substr(da[, 1], 5, 6), substring(da[, 1], 7),
-	sep = '-'))), type = 'l', main = '', xlab = 'date', ylab = 'mmm')
-Box.test(mmm,     lag = 12, type = 'Ljung')
-Box.test(mmm ^ 2, lag = 6,  type = 'Ljung')
-Box.test(mmm ^ 2, lag = 12, type = 'Ljung')
-par(mfrow = c(2, 1))
-acf(mmm)
-pacf(mmm ^ 2)
-m1 = garchFit(~ arma(0, 0) + garch(2, 0), data = mmm, trace = F)
+da = read.table("data/m-gmsp5008.txt", header = T)
+gm = log(1 + da[, 2]) * 100
+plot(xts(gm, order.by = as.Date(paste(substr(da[, 1], 1, 4), substr(da[, 1], 5, 6), substring(da[, 1], 7),
+	sep = '-'))), type = 'l', main = '', xlab = 'date', ylab = 'gm')
+acf(gm)
+m1 = garchFit(~ arma(0, 0) + garch(1, 1), data = gm, trace = F)
 summary(m1)
-mmma = mmm[1:750]
-m2 = garchFit(~ arma(0, 0) + garch(2, 0), data = mmma, trace = F)
-summary(m2)
-predict(m2, 5)
-m3 = ugarchfit(ugarchspec(variance.model = list(model = "sGARCH", garchOrder = c(2, 0)),
-	mean.model = list(armaOrder = c(0, 0), archm = T)), mmm)
-show(m3)
+predict(m1, 6)
+m2 = ugarchfit(ugarchspec(variance.model = list(model = "sGARCH", garchOrder = c(1, 1)),
+	mean.model = list(armaOrder = c(0, 0), archm = T)), gm)
+show(m2)
+ugarchforecast(m2, n.ahead = 6)
+m3 = garchFit(~ arma(0, 0) + garch(1, 1), data = gm, cond.dist = "std", trace = F)
+summary(m3)
+predict(m3, 6)
+cat("tt =", (9.41762 - 6) / 2.96756, "\n");
 m4 = ugarchfit(ugarchspec(variance.model = list(model = "eGARCH", garchOrder = c(1, 1)),
-	mean.model = list(armaOrder = c(0, 0))), mmma)
+	mean.model = list(armaOrder = c(0, 0))), gm / 100)
 show(m4)
-ugarchforecast(m4, n.ahead = 5)
+ugarchforecast(m4, n.ahead = 6)
 
