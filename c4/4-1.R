@@ -15,17 +15,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-require(fGarch)
+require(xts)
 require(rugarch)
 
-da = read.table("data/d-gmsp9908.txt", header = T)
-gm = log(1 + da[, 2]) * 100
-sp = log(1 + da[, 3]) * 100
-m1 = garchFit(~ garch(1, 1), data = gm, cond.dist = "ged", trace = F)
-summary(m1)
-gmvol = m1@sigma.t
-m2 = ugarchfit(ugarchspec(variance.model = list(model = "sGARCH", garchOrder = c(1, 1),
-	external.regressors = as.matrix(gmvol)), mean.model = list(armaOrder = c(0, 0)),
-	distribution.model = "ged"), sp)
+da = read.table("data/d-jnj9808.txt", header = T)
+jnj = log(1 + da[, 2]) * 100
+plot(xts(jnj, order.by = as.Date(paste(substr(da[, 1], 1, 4), substr(da[, 1], 5, 6), substring(da[, 1], 7),
+	sep = '-'))), type = 'l', main = '', xlab = 'date', ylab = 'jnj')
+m1 = ugarchfit(ugarchspec(variance.model = list(model = "gjrGARCH", garchOrder = c(1, 1)),
+	mean.model = list(armaOrder = c(0, 0))), jnj)
+show(m1)
+m2 = ugarchfit(ugarchspec(variance.model = list(model = "fGARCH", garchOrder = c(1, 1), submodel = "TGARCH"),
+	mean.model = list(armaOrder = c(0, 0))), jnj)
 show(m2)
 

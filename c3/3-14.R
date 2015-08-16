@@ -30,7 +30,7 @@ m1 = garchFit(~ arma(5, 0) + garch(1, 1), data = sp, cond.dist = "ged", trace = 
 summary(m1)
 spvol = m1@sigma.t
 m2 = ugarchfit(ugarchspec(variance.model = list(model = "sGARCH", garchOrder = c(1, 1),
-	external.regressors = as.matrix(spvol)), mean.model = list(armaOrder = c(0, 0))),
-	distribution.model = "ged", gm)
+	external.regressors = as.matrix(spvol)), mean.model = list(armaOrder = c(0, 0)),
+	distribution.model = "ged"), gm)
 show(m2)
 
