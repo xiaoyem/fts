@@ -24,6 +24,7 @@ summary(m1)
 par(mfrow = c(2, 1))
 acf(m1$residuals)
 pacf(m1$residuals)
+# FIXME
 m2 = arima(diff(Aaa), order = c(4, 0, 0), xreg = diff(Baa), include.mean = F)
 m2
 Box.test(m2$residuals, lag = 12, type = 'Ljung')

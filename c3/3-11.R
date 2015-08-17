@@ -24,6 +24,7 @@ plot(xts(gm, order.by = as.Date(paste(substr(da[, 1], 1, 4), substr(da[, 1], 5, 
 	sep = '-'))), type = 'l', main = '', xlab = 'date', ylab = 'gm')
 Box.test(gm ^ 2, lag = 10, type = 'Ljung')
 pacf(gm ^ 2, 10)
+# FIXME
 m1 = garchFit(~ garch(1, 1), data = gm, trace = F)
 summary(m1)
 m2 = garchFit(~ garch(1, 1), data = gm, cond.dist = "ged", trace = F)

@@ -29,6 +29,7 @@ W = da$W
 R = da$R
 m1 = lm(ew ~ M + T + W + R)
 summary(m1)
+# FIXME
 coeftest(m1, NeweyWest(m1, lag = 12, prewhite = F))
 Box.test(m1$residuals, lag = 12, type = 'Ljung')
 par(mfrow = c(2, 1))
@@ -36,6 +37,7 @@ acf(m1$residuals)
 pacf(m1$residuals)
 acf(diff(m1$residuals, 5))
 pacf(diff(m1$residuals, 5))
+# FIXME
 m2 = arima(ew, order = c(2, 0, 2), seasonal = list(order = c(1, 0, 0), period = 5), xreg = da[, 8:11])
 m2
 tsdiag(m2, gof = 20)

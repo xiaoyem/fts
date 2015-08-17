@@ -24,6 +24,7 @@ plot(xts(y, order.by = as.Date(paste(da$year, da$mom, da$day, sep = '-'))),
 par(mfrow = c(2, 1))
 acf(diff(y))
 pacf(diff(y))
+# FIXME
 m1 = arima(diff(y), order = c(2, 0, 1))
 m1
 tsdiag(m1, gof = 20)

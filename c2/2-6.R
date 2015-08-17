@@ -27,6 +27,7 @@ acf(diff(pow, 12))
 pacf(diff(pow, 12))
 acf(diff(diff(pow), 12))
 pacf(diff(diff(pow), 12))
+# FIXME
 m1 = arima(pow, order = c(0, 1, 1), seasonal = list(order = c(0, 1, 1), period = 12))
 m1
 tsdiag(m1, gof = 36)

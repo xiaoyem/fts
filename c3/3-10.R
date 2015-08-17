@@ -24,7 +24,7 @@ gm = log(1 + da[, 2])
 sp = log(1 + da[, 3])
 plot(xts(sp, order.by = as.Date(paste(substr(da[, 1], 1, 4), substr(da[, 1], 5, 6), substring(da[, 1], 7),
 	sep = '-'))), type = 'l', main = '', xlab = 'date', ylab = 'sp')
-m1 = garchFit(~ garch(1, 1), data = sp, trace = F)
+m1 = garchFit(~ arma(0, 0) + garch(1, 1), data = sp, trace = F)
 summary(m1)
 it = rep(c(0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0), 59)
 m2 = ugarchfit(ugarchspec(variance.model = list(model = "sGARCH", garchOrder = c(1, 1),
