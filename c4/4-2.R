@@ -18,15 +18,12 @@
 require(xts)
 require(rugarch)
 
-da = read.table("data/d-jnj9808.txt", header = T)
-jnj = log(1 + da[, 2]) * 100
-plot(xts(jnj, order.by = as.Date(paste(substr(da[, 1], 1, 4), substr(da[, 1], 5, 6), substring(da[, 1], 7),
-	sep = '-'))), type = 'l', main = '', xlab = 'date', ylab = 'jnj')
-m1 = ugarchfit(ugarchspec(variance.model = list(model = "gjrGARCH", garchOrder = c(1, 1)),
-	mean.model = list(armaOrder = c(0, 0))), jnj)
-show(m1)
+da = read.table("data/m-ge2608.txt", header = T)
+ge = log(1 + da[, 2]) * 100
+plot(xts(ge, order.by = as.Date(paste(substr(da[, 1], 1, 4), substr(da[, 1], 5, 6), substring(da[, 1], 7),
+	sep = '-'))), type = 'l', main = '', xlab = 'date', ylab = 'ge')
 # FIXME
-m2 = ugarchfit(ugarchspec(variance.model = list(model = "fGARCH", garchOrder = c(1, 1), submodel = "TGARCH"),
-	mean.model = list(armaOrder = c(0, 0))), jnj)
-show(m2)
+m1 = ugarchfit(ugarchspec(variance.model = list(model = "fGARCH", garchOrder = c(1, 1), submodel = "TGARCH"),
+	mean.model = list(armaOrder = c(0, 0)), distribution.model = "ged"), ge)
+show(m1)
 
