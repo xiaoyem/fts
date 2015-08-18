@@ -1,0 +1,11 @@
+require(rugarch)
+da1 = read.table("w-gs1yr.txt", header = TRUE)
+da2 = read.table("w-gs3yr.txt", header = TRUE)
+ r1=log(da1$rate+1)
+ r3=log(da2$rate+1)
+ s=r3-r1
+ ds=diff(s)
+ m1 = ugarchfit(ugarchspec(variance.model = list(model = "fGARCH", garchOrder = c(1, 1), submodel = "TGARCH"),mean.model = list(armaOrder = c(0, 0))),s)
+ show(m1)
+ m2 = ugarchfit(ugarchspec(variance.model = list(model = "fGARCH", garchOrder = c(1, 1), submodel = "TGARCH"),mean.model = list(armaOrder = c(0, 0))),ds)
+show(m2)
