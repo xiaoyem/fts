@@ -18,7 +18,6 @@
 require(nnet)
 
 da = read.table("data/m-ge2608.txt", header = T)
-dim(da)
 y = da[4:960, 2]
 xx = cbind(da[3:959, 2], da[2:958, 2], da[1:957, 2])
 m1 = nnet(xx, y, size = 2, linout = T, skip = T, maxit = 3000)
@@ -27,30 +26,15 @@ yp = da[961:996, 2]
 xp = cbind(da[960:995, 2], da[959:994, 2], da[958:993, 2])
 mse = sum((yp - predict(m1, xp)) ^ 2) / 36
 cat("mse =", mse, "\n");
+# FIXME
+yd = ifelse(da[4:960, 2] > 0, 1, 0)
+xx = cbind(xx, ifelse(da[3:959, 2] > 0, 1, 0), ifelse(da[2:958, 2] > 0, 1, 0),
+	ifelse(da[1:957, 2] > 0, 1, 0))
+m2 = nnet(xx, yd, size = 5, skip = T, maxit = 3000)
+summary(m2)
+ypd = ifelse(da[961:996, 2] > 0, 1, 0)
+xp = cbind(xp, ifelse(da[960:995, 2] > 0, 1, 0), ifelse(da[959:994, 2] > 0, 1, 0),
+	ifelse(da[958:993, 2] > 0, 1, 0))
+mse = sum((ypd - ifelse(predict(m1, xp) > 0.5, 1, 0)) ^ 2) / 36
+cat("mse =", mse, "\n");
 
-yd=ifelse(y>0,1,0)
-x1=da[3:959, 2]
-x2=da[2:958, 2]
-x3=da[1:957, 2]
-x1d=ifelse(x1>0,1,0)
-x2d=ifelse(x2>0,1,0)
-x3d=ifelse(x3>0,1,0)
-xx=cbind(x1,x2,x3,x1d,x2d,x3d)
-m2=nnet(xx,yd,size=5,linout=T,skip=T,maxit=3000)
-ydhat=ifelse(m2$fitted.values>0.5,1,0)
-yp=da[961:996, 2]
-x1p=da[960:995, 2]
-x2p=da[959:994, 2]
-x3p=da[958:993, 2]
-x1pd=ifelse(x1p>0,1,0)
-x2pd=ifelse(x2p>0,1,0)
-x3pd=ifelse(x3p>0,1,0)
-xp=cbind(x1p,x2p,x3p,x1pd,x2pd,x3pd)
-ypredict=predict(m2,xp)
-ypredict2=ifelse(ypredict>0.5,1,0)
-ypredict2
-mse = sum((yp - predict(m2, xp)) ^ 2) / 36
-mse
-ypd=ifelse(yp>0,1,0)
-mse = sum((ypd - ypredict2) ^ 2) / 36
-mse
