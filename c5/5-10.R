@@ -15,13 +15,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-da1=read.table("taq-td-ba1.txt",header=TRUE)
-da2=read.table("taq-td-ba2.txt",header=TRUE)
-da3=read.table("taq-td-ba3.txt",header=TRUE)
-da4=read.table("taq-td-ba4.txt",header=TRUE)
-da5=read.table("taq-td-ba5.txt",header=TRUE)
-total=rbind(da1,da2,da3,da4,da5)
-p=total[2:dim(total)[1],5]
-plag=total[1:(dim(total)[1]-1),5]
-c=p-plag
-sum(c==0)/(dim(total)[1]-5)
+da1 = read.table("data/taq-td-ba12012008.txt", header = T)
+da2 = read.table("data/taq-td-ba12022008.txt", header = T)
+da3 = read.table("data/taq-td-ba12032008.txt", header = T)
+da4 = read.table("data/taq-td-ba12042008.txt", header = T)
+da5 = read.table("data/taq-td-ba12052008.txt", header = T)
+c1 = diff(da1[, 4])
+c2 = diff(da2[, 4])
+c3 = diff(da3[, 4])
+c4 = diff(da4[, 4])
+c5 = diff(da5[, 4])
+s = sum(c1 == 0) + sum(c2 == 0) + sum(c3 == 0) + sum(c4 == 0) + sum(c5 == 0)
+t = length(c1)   + length(c2)   + length(c3)   + length(c4)   + length(c5)
+cat(s, "/", t, "=", s / t, "\n")
+
