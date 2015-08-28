@@ -14,17 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-source("acd.R")
-da=read.table("mmm9912-adur.txt",header=FALSE)
-head(da)
-ad=da[,1]
-acf(ad)
-m1=acd(ad)
+
+da = read.table("data/mmm9912-adur.txt", header = F)
+adjdt = da[, 1]
+acf(adjdt)
+source("c5/acd.R")
+m1 = acd(adjdt)
 Box.test(m1$epsilon,     lag = 10, type = 'Ljung')
 Box.test(m1$epsilon ^ 2, lag = 10, type = 'Ljung')
-m2 = acd(ad, cond.dist = "weibull")
+m2 = acd(adjdt, cond.dist = "weibull")
 Box.test(m2$epsilon,     lag = 10, type = 'Ljung')
 Box.test(m2$epsilon ^ 2, lag = 10, type = 'Ljung')
-m3 = acd(ad, cond.dist = "gamma")
+m3 = acd(adjdt, cond.dist = "gamma")
 Box.test(m3$epsilon,     lag = 10, type = 'Ljung')
 Box.test(m3$epsilon ^ 2, lag = 10, type = 'Ljung')
+

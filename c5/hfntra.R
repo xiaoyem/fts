@@ -1,4 +1,4 @@
-"hfntra" <- function(da, int) {
+"hfntra" <- function(da, int, collapsed = TRUE) {
 # Compute number of trades in a given interval (intraday)
 #
 # int: time intervals in minutes
@@ -20,8 +20,11 @@
 	print(des)
 	counts = rep(0, ntrad)
 	# compute time in seconds from midnight.
-	#caltime = da[, 2] * 60 * 60 + da[, 3] * 60 + da[, 4]
-	caltime = da[, 2]
+	if (collapsed) {
+		caltime = da[, 2]
+	} else {
+		caltime = da[, 2] * 60 * 60 + da[, 3] * 60 + da[, 4]
+	}
 	#plot(caltime, type = 'l')
 	date = da[1, 1]
 	for (i in 1:T) {
@@ -42,9 +45,9 @@
 			}
 		}
 	}
-	par(mfcol = c(2, 1))
 	# FIXME
 	counts = counts[which(counts != 0)]
+	par(mfcol = c(2, 1))
 	plot(counts, type = 'l')
 	title(main = "Time plot of number of transactions")
 	acf(counts, lag = 3 * nintval)

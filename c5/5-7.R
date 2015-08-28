@@ -14,11 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-source("hfntra.R")
-da1=read.table("taq-td-ba1.txt",header=TRUE)
-da2=read.table("taq-td-ba2.txt",header=TRUE)
-da3=read.table("taq-td-ba3.txt",header=TRUE)
-da4=read.table("taq-td-ba4.txt",header=TRUE)
-da5=read.table("taq-td-ba5.txt",header=TRUE)
-total=rbind(da1,da2,da3,da4,da5)
-n1=hfntra(total,5)
+
+da1 = read.table("data/taq-td-ba12012008.txt", header = T)
+date = rep(1, nrow(da1))
+da1 = data.frame(date, da1)
+da2 = read.table("data/taq-td-ba12022008.txt", header = T)
+date = rep(2, nrow(da2))
+da2 = data.frame(date, da2)
+da3 = read.table("data/taq-td-ba12032008.txt", header = T)
+date = rep(3, nrow(da3))
+da3 = data.frame(date, da3)
+da4 = read.table("data/taq-td-ba12042008.txt", header = T)
+date = rep(4, nrow(da4))
+da4 = data.frame(date, da4)
+da5 = read.table("data/taq-td-ba12052008.txt", header = T)
+date = rep(5, nrow(da5))
+da5 = data.frame(date, da5)
+source("c5/hfntra.R")
+hfntra(rbind(da1, da2, da3, da4, da5), 5, F)
+

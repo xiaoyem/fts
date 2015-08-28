@@ -17,7 +17,6 @@
 
 da = read.table("data/ibm-d2-dur.txt", header = F)
 adjdt = da[, 3]
-# FIXME
 source("c5/acd.R")
 m1 = acd(adjdt)
 Box.test(m1$epsilon,     lag = 10, type = 'Ljung')

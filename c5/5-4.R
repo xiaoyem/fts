@@ -18,4 +18,5 @@
 da = read.table("data/mmm9912-dtp.txt", header = F)
 source("c5/hfntra.R")
 hfntra(da, 5)
+acf(diff(log(da[, 3])), plot = F)
 
