@@ -19,4 +19,21 @@ da = read.table("data/mmm9912-dtp.txt", header = F)
 source("c5/hfntra.R")
 hfntra(da, 5)
 acf(diff(log(da[, 3])), plot = F)
+pchg = NULL
+for (i in 2:dim(da)[1]) {
+	if (da[i, 1] == da[i - 1, 1]) pchg = c(pchg, da[i, 3] - da[i - 1, 3])
+}
+tab = c(sum(pchg <= -5 / 16),
+	sum(pchg <= -4 / 16 & pchg > -5 / 16),
+	sum(pchg <= -3 / 16 & pchg > -4 / 16),
+	sum(pchg <= -2 / 16 & pchg > -3 / 16),
+	sum(pchg <= -1 / 16 & pchg > -2 / 16),
+	sum(pchg <   1 / 16 & pchg > -1 / 16),
+	sum(pchg <   2 / 16 & pchg >= 1 / 16),
+	sum(pchg <   3 / 16 & pchg >= 2 / 16),
+	sum(pchg <   4 / 16 & pchg >= 3 / 16),
+	sum(pchg <   5 / 16 & pchg >= 4 / 16),
+	sum(pchg >=  5 / 16))
+names(tab) = c("-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4", "5")
+tab
 
