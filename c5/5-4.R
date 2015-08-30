@@ -16,11 +16,23 @@
 #
 
 da = read.table("data/mmm9912-dtp.txt", header = F)
+T = dim(da)[1]
+# FIXME
+icnt = 0;
+prev = 0;
+while (icnt < T) {
+	idx = c(1:T)[da[, 1] == da[icnt + 1, 1]]
+	for (i in (icnt + 1):(icnt + length(idx))) {
+		if (da[i, 1] > prev + 1) da[i, 1] = prev + 1
+	}
+	icnt = icnt + length(idx)
+	prev = da[icnt, 1]
+}
 source("c5/hfntra.R")
 hfntra(da, 5)
 acf(diff(log(da[, 3])), plot = F)
 pchg = NULL
-for (i in 2:dim(da)[1]) {
+for (i in 2:T) {
 	if (da[i, 1] == da[i - 1, 1]) pchg = c(pchg, da[i, 3] - da[i - 1, 3])
 }
 tab = c(sum(pchg <= -5 / 16),
@@ -33,7 +45,7 @@ tab = c(sum(pchg <= -5 / 16),
 	sum(pchg <   3 / 16 & pchg >= 2 / 16),
 	sum(pchg <   4 / 16 & pchg >= 3 / 16),
 	sum(pchg <   5 / 16 & pchg >= 4 / 16),
-	sum(pchg >=  5 / 16))
+	sum(                  pchg >= 5 / 16))
 names(tab) = c("-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3", "4", "5")
 tab
 

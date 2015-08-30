@@ -1,4 +1,4 @@
-"hfrtn" <- function(da, int, logrtn = TRUE) {
+"hfrtn" <- function(da, int, logrtn = TRUE, collapsed = TRUE, averaged = TRUE) {
 # Compute intraday returns
 #
 # int: time intervals in minutes
@@ -16,24 +16,63 @@
 	npri = nday * ntrade
 	#print(c(ntrade, nday, npri))
 	price = rep(0, npri)
+	count = rep(0, npri)
 	# price is the last transaction price of the time interval
-	caltime = da[, 2] * 60 * 60 + da[, 3] * 60 + da[, 4]
+	if (collapsed) {
+		caltime = da[, 2]
+	} else {
+		caltime = da[, 2] * 60 * 60 + da[, 3] * 60 + da[, 4]
+	}
 	#plot(caltime, type = 'l')
-	icnt = 0
 	date = da[1, 1]
 	for (i in 1:T) {
 		if (caltime[i] > istart) {
 			iday = da[i, 1] - date
 			if (caltime[i] < (iend + 1)) {
 				if (caltime[i] == iend) {
-					price[iday * ntrade + ntrade] = da[i, 5]
+					if (averaged) {
+						if (collapsed) {
+							price[iday * ntrade + ntrade] = price[iday * ntrade + ntrade] +
+								da[i, 3]
+						} else {
+							price[iday * ntrade + ntrade] = price[iday * ntrade + ntrade] +
+								da[i, 5]
+						}
+					} else {
+						if (collapsed) {
+							price[iday * ntrade + ntrade] = da[i, 3]
+						} else {
+							price[iday * ntrade + ntrade] = da[i, 5]
+						}
+					}
+					count[iday * ntrade + ntrade] = count[iday * ntrade + ntrade] + 1
 				}
 				if ((caltime[i] > istart) && (caltime[i] < iend)) {
 					ii = caltime[i] - istart
 					ij = floor(ii / intsec)
-					price[iday * ntrade + ij + 1] = da[i, 5]
+					if (averaged) {
+						if (collapsed) {
+							price[iday * ntrade + ij + 1] = price[iday * ntrade + ij + 1] +
+								da[i, 3]
+						} else {
+							price[iday * ntrade + ij + 1] = price[iday * ntrade + ij + 1] +
+								da[i, 5]
+						}
+					} else {
+						if (collapsed) {
+							price[iday * ntrade + ij + 1] = da[i, 3]
+						} else {
+							price[iday * ntrade + ij + 1] = da[i, 5]
+						}
+					}
+					count[iday * ntrade + ij + 1] = count[iday * ntrade + ij + 1] + 1
 				}
 			}
+		}
+	}
+	if (averaged) {
+		for (i in 1:npri) {
+			if (count[i] > 0) price[i] = price[i] / count[i]
 		}
 	}
 	for (i in 2:npri) {

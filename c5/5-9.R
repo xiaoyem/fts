@@ -31,7 +31,7 @@ da5 = read.table("data/taq-td-ba12052008.txt", header = T)
 date = rep(5, nrow(da5))
 da5 = data.frame(date, da5)
 source("c5/hfrtn.R")
-hfrtn = hfrtn(rbind(da1, da2, da3, da4, da5), 10)
+hfrtn = hfrtn(rbind(da1, da2, da3, da4, da5), 10, collapsed = F, averaged = F)
 par(mfrow = c(2, 1))
 plot(hfrtn$rtn,   type = 'l', main = '10-minute intraday returns', ylab = 'returns');
 plot(hfrtn$price, type = 'l', main = 'price',                      ylab = 'price');

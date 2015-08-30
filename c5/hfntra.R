@@ -45,8 +45,6 @@
 			}
 		}
 	}
-	# FIXME
-	counts = counts[which(counts != 0)]
 	par(mfcol = c(2, 1))
 	plot(counts, type = 'l')
 	title(main = "Time plot of number of transactions")

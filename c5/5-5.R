@@ -14,18 +14,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-source("hfrtn.R")
-da=read.table("mmm9912-dtp2.txt",header=FALSE)
-n1=hfrtn(da,5)
-names(n1)
-ts.plot(n1$rtn,main="5-m log returns")
-Box.test(n1$rtn,lag=10,type='Ljung')
-length(n1$rtn)/77
-for (i in 31){
-idx=(i-1)*77
-tmp=sum(n1$rtn[(idx+1):(idx+77)]^2)
-v1=c(v1,tmp)
+
+da = read.table("data/mmm9912-dtp.txt", header = F)
+T = dim(da)[1]
+# FIXME
+icnt = 0;
+prev = 0;
+while (icnt < T) {
+	idx = c(1:T)[da[, 1] == da[icnt + 1, 1]]
+	for (i in (icnt + 1):(icnt + length(idx))) {
+		if (da[i, 1] > prev + 1) da[i, 1] = prev + 1
+	}
+	icnt = icnt + length(idx)
+	prev = da[icnt, 1]
 }
-v1=sqrt(v1)
-v1
-plot(v1,type='l')
+source("c5/hfrtn.R")
+hfrtn = hfrtn(da, 5)
+par(mfrow = c(2, 1))
+plot(hfrtn$rtn,   type = 'l', main = '5-minute intraday returns', ylab = 'returns');
+plot(hfrtn$price, type = 'l', main = 'price',                     ylab = 'price');
+Box.test(hfrtn$rtn, lag = 10, type = 'Ljung')
+# FIXME
+vol = NULL
+for (i in 0:21) {
+	vol = c(vol, sum(hfrtn$rtn[(77 * i + 1):(77 * i + 77)] ^ 2))
+}
+plot(vol, type = 'l', main = 'Under independence', xlab = 'day')
+
