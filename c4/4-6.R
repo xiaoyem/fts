@@ -23,7 +23,12 @@ s1 = da2$rate - da1$rate
 s2 = diff(da2$rate) - diff(da1$rate)
 cat("order1 =", ar(s1, method = 'mle')$order, "\n")
 cat("order2 =", ar(s2, method = 'mle')$order, "\n")
-# FIXME
+Tsay.test(s1, 11)
+Tsay.test(s2, 12)
+Keenan.test(s1, 11)
+Keenan.test(s2, 12)
+tlrt(s1, 11)
+tlrt(s2, 12)
 m1 = tar(s1, 11, 11, 1)
 m1$qr1$coefficients
 m1$qr2$coefficients
