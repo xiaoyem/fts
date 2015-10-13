@@ -26,6 +26,8 @@ Box.test(y^2, lag = 10, type = 'Ljung')
 require(fGarch)
 m1 = garchFit(~1 + garch(2,1), data = rtn, trace = F)
 summary(m1)
+plot(m1)
+13
 resi = residuals(m1, standardize = T)
 tdx = c(1: 2535) / 365 + 2001
 plot(tdx, resi, xlab = 'year', ylab = 'stand-resi', type = 'l')
