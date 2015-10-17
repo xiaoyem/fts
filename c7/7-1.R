@@ -14,34 +14,32 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 require(fGarch)
-da = read.table("data/d-ge9808.txt", header = TRUE)
-head(da)
-dim(da)
-ge=da[,2]
-source("RMfit.R")
+require(evir)
+
+da = read.table("data/d-ge9808.txt", header = T)
+ge = log(1 + da[, 2])
+# FIXME
+source("c7/RMfit.R")
 RMfit(ge)
-m2=garchFit(~arma(1,0)+garch(1,1),data=ge,trace=FALSE)
+sqrt(15) * 0.1157275
+m1 = garchFit(~ arma(2, 0) + garch(1, 1), data = ge, trace = F)
+summary(m1)
+m2 = garchFit(~ arma(0, 0) + garch(1, 1), data = ge, trace = F)
 summary(m2)
-m3=garchFit(~arma(0,0)+garch(1,1),data=ge,trace=FALSE)
+m2p = predict(m2, 15)
+source("c7/RMeasure.R")
+RMeasure(-m2p$meanForecast[1], m2p$meanError[1])
+RMeasure(-sum(m2p$meanForecast), sqrt(sum(m2p$meanError ^ 2)))
+m3 = garchFit(~ arma(0, 0) + garch(1, 1), data = ge, cond.dist = "std", trace = F)
 summary(m3)
-m3p=predict(m3,15)
-m3p
-pre1=0.000393-2.326348*0.04962843
-abs(pre1)*1000000
-pre15=sum(m3p$meanForecast)-2.326348*sqrt(sum(m3p$meanError^2))
-abs(pre15)*1000000
-m4=garchFit(~arma(0,0)+garch(1,1),data=ge,cond.dist = "std",trace=FALSE)
-summary(m4)
-m4p=predict(m3,15)
-m4p
-pre1=0.000236-2.326348*0.04929286
-abs(pre1)*1000000
-pre15=sum(m4p$meanForecast)-2.326348*sqrt(sum(m4p$meanError^2))
-abs(pre15)*1000000
-nge=-ge
-m5=gev(nge,block = 21)
-m5
-source("evtVaR.R")
-evtVaR(0.3084,0.012140,0.021065,n=21,p=0.01)
-0.04530087*1000000
+m3p = predict(m3, 15)
+RMeasure(-m3p$meanForecast[1], m3p$meanError[1], "std", 7.6335)
+RMeasure(-sum(m3p$meanForecast), sqrt(sum(m3p$meanError ^ 2)), "std", 7.6335)
+m4 = gev(-ge, 21)
+m4
+source("c7/evtVaR.R")
+evtVaR(0.32662479, 0.01241653, 0.02126877)
+15 ^ 0.32662479 * 0.04643982
+

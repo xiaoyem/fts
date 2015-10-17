@@ -14,27 +14,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 require(fGarch)
-da = read.table("data/d-csco9808.txt", header = TRUE)
-head(da)
-rtn=log(1 + da[, 2])
-source("RMfit.R")
-RMfit(rtn)
-m1=garchFit(~garch(1,1),data=rtn,trace=FALSE)
+require(evir)
+
+da = read.table("data/d-csco9808.txt", header = T)
+csco = log(1 + da[, 2])
+# FIXME
+source("c7/RMfit.R")
+RMfit(csco)
+m1 = garchFit(~ arma(0, 0) + garch(1, 1), data = csco, trace = F)
 summary(m1)
-m1p=predict(m1,1)
-m1p
-pre1=0.001283774-2.326348*0.03091923
-pre1
-m2=garchFit(~arma(0,0)+garch(1,1),data=rtn,cond.dist = "std",trace=FALSE)
+m1p = predict(m1, 1)
+source("c7/RMeasure.R")
+RMeasure(-m1p$meanForecast[1], m1p$meanError[1])
+m2 = garchFit(~ arma(0, 0) + garch(1, 1), data = csco, cond.dist = "std", trace = F)
 summary(m2)
-m2p=predict(m2,1)
-m2p
-pre1=0.0007615308-2.326348*0.03953755
-pre1
-quantile(rtn,0.01)
-m3=gpd(-rtn,threshold = 0.02)
-summary(m3)
-par(mfcol=c(2,2))
-plot(m3)
-riskmeasures(m3,c(0.99))
+m2p = predict(m2, 1)
+RMeasure(-m2p$meanForecast[1], m2p$meanError[1], "std", 6.4016)
+quantile(-csco, 0.99)
+m3 = gpd(-csco, 0.02)
+m3
+#par(mfcol = c(2, 2))
+#plot(m3)
+riskmeasures(m3, c(0.99))
+

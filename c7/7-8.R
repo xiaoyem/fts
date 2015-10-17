@@ -14,12 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 require(evir)
-da = read.table("data/d-ge9808.txt", header = TRUE)
-head(da)
-ge=da[,2]
-nge=-ge
-m1=exindex(ge,5)
-m2=exindex(ge,10)
-m3=exindex(nge,5)
-m4=exindex(nge,10)
+
+da = read.table("data/d-ge9808.txt", header = T)
+ge = log(1 + da[, 2])
+# FIXME
+m1 = exindex(ge,  5)
+m2 = exindex(ge,  10)
+m3 = exindex(-ge, 5)
+m4 = exindex(-ge, 10)
+

@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2015 by Yuchao Zhao, Xiaoye Meng.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
@@ -9,19 +14,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 require(evir)
-da = read.table("data/d-aaspx9808.txt", header = TRUE)
-head(da)
-nsp=-log(da[,3]+1)*100
-m1=gev(nsp,block=21)
+
+da = read.table("data/d-aaspx9808.txt", header = T)
+sp = log(1 + da[, 3]) * 100
+# FIXME
+m1 = gev(-sp, 21)
 m1
-plot(m1)
-par(mfcol=c(2,1))
-qplot(nsp,threshold = 0.025,main='Negative daily SP log returns')
-meplot(nsp)
-title(mai='Mean excess plot')
-mgpd=gpd(nsp,threshold = 0.025)
-mgpd
-par(mfcol=c(2,2))
-plot(mgpd)
-riskmeasures(mgpd,c(0.95,0.99,0.999))
+#par(mfcol = c(1, 2))
+#plot(m1)
+par(mfcol = c(1, 1))
+rl.21.24 = rlevel.gev(m1, 24)
+rl.21.24
+par(mfcol = c(1, 2))
+qplot(-sp, threshold = 0.025)
+meplot(-sp)
+m2 = gpd(-sp, 0.025)
+m2
+#par(mfcol = c(2, 2))
+#plot(m2)
+riskmeasures(m2, c(0.99, 0.999))
+

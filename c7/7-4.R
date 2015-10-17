@@ -14,28 +14,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 require(fGarch)
-da = read.table("data/d-hpq3dx9808.txt", header = TRUE)
-head(da)
-lhp=log(da[,2]+1)
-lsp=log(da[,5]+1)
-cor(lhp,lsp)
-source("RMfit.R")
-RMfit(lhp)
-RMfit(lsp)
-source("Igarch.R")
-m1=Igarch(lhp)
-m2=Igarch(lsp)
-VaR=sqrt(0.0827996^2+0.07410689^2+2*cor(lhp,lsp)*0.0827996*0.07410689)
-VaR*1000000
-m3=garchFit(~garch(1,1),data=lhp,trace=FALSE)
-summary(m3)
-m3p=predict(m3,1)
-m3p
-m4=garchFit(~garch(1,1),data=lsp,trace=FALSE)
-m4p=predict(m4,1)
-m4p
-var1=0.0007396582-2.326348*0.03698938
-var2=0.0002592816-2.326348*0.02664042
-VaR=sqrt(var1^2+var2^2+2*cor(lsp,lhp)*var1*var2)
-VaR*1000000
+
+da = read.table("data/d-hpq3dx9808.txt", header = T)
+hpq = log(1 + da[, 2])
+sp  = log(1 + da[, 5])
+# FIXME
+source("c7/RMfit.R")
+RMfit(hpq)
+RMfit(sp)
+cor(hpq, sp)
+sqrt(0.08279960 ^ 2 + 0.07410689 ^ 2 + 2 * 0.5606587 * 0.08279960 * 0.07410689)
+m1 = garchFit(~ arma(0, 0) + garch(1, 1), data = hpq, trace = F)
+summary(m1)
+m1p = predict(m1, 1)
+source("c7/RMeasure.R")
+RMeasure(-m1p$meanForecast[1], m1p$meanError[1])
+m2 = garchFit(~ arma(0, 0) + garch(1, 1), data = sp, trace = F)
+summary(m2)
+m2p = predict(m2, 1)
+RMeasure(-m2p$meanForecast[1], m2p$meanError[1])
+sqrt(0.08531052 ^ 2 + 0.06171560 ^ 2 + 2 * 0.5606587 * 0.08531052 * 0.06171560)
+

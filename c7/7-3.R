@@ -14,11 +14,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 require(evir)
-da = read.table("data/d-csco9808.txt", header = TRUE)
-head(da)
-rtn=log(1 + da[, 2])
-par(mfcol=c(2,1))
-hill(rtn,option=c("xi"),end=500)
-hill(-rtn,option=c("xi"),end=500)
-m1=exindex(-rtn,10)
+
+da = read.table("data/d-csco9808.txt", header = T)
+csco = log(1 + da[, 2])
+# FIXME
+par(mfcol = c(2, 1))
+hill(csco,  option = c("xi"), end = 500)
+hill(-csco, option = c("xi"), end = 500)
+source("c7/Hill.R")
+Hill(csco,  190)
+Hill(-csco, 190)
+

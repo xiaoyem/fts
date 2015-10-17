@@ -14,19 +14,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 require(evir)
-da = read.table("data/d-aaspx9808.txt", header = TRUE)
-head(da)
-naa=-log(da[,2]+1)*100
-m1=gev(naa,block=21)
+
+da = read.table("data/d-aaspx9808.txt", header = T)
+aa = log(1 + da[, 2]) * 100
+# FIXME
+m1 = gev(-aa, 21)
 m1
-plot(m1)
-par(mfcol=c(2,1))
-qplot(naa,threshold = 0.025,main='Negative daily AA log returns')
-meplot(naa)
-title(mai='Mean excess plot')
-mgpd=gpd(naa,threshold = 0.035)
-mgpd
-par(mfcol=c(2,2))
-plot(mgpd)
-riskmeasures(mgpd,c(0.99,0.999))
+#par(mfcol = c(1, 2))
+#plot(m1)
+par(mfcol = c(1, 1))
+rl.21.24 = rlevel.gev(m1, 24)
+rl.21.24
+par(mfcol = c(1, 2))
+qplot(-aa, threshold = 0.025)
+meplot(-aa)
+m2 = gpd(-aa, 0.035)
+m2
+#par(mfcol = c(2, 2))
+#plot(m2)
+riskmeasures(m2, c(0.99, 0.999))
+
