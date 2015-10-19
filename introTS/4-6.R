@@ -19,6 +19,7 @@ Yang_Zhang <- function(start, n, o, c, d, u)
   {
     end = start + n
   }
+  n = end - start
   sigma_o = 0
   sigma_c = 0
   for (t in start:end)
