@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-#6-1
+#6-3
 require(fBasics)
 da = read.table("taq-aa-t-june72010.txt", header = T)
 par(mfrow = c(2, 1))
