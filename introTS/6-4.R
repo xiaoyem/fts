@@ -81,6 +81,7 @@ pch = pch / length(price_diff)
 
 #(c)
 #P227
+require(MASS)
 vol = da$SIZE / 100
 vol = vol[sec]
 cf = as.factor(cpch)
@@ -89,8 +90,7 @@ length(vol)
 y = cf[4:78413]
 y1 = cf[3:78412]
 y2 = cf[2:78411]
-vol = da$SIZE / 100
-vol = vol[sec]
+
 length(vol)
 vol = vol[2:78412]
 v2 = vol[2:78411]
@@ -101,3 +101,44 @@ m1 = polr(y~v2+cp1+cp2+cp3+y1+y2, method = "probit")
 names(m1)
 yhat = m1$fitted.values
 print(yhat[1:5,], digits=3)
+
+#(d)
+source("GeoSize.R")
+idx = c(1:78413)[price_diff > 0]#[price_diff > 0]
+jdx = c(1:78413)[price_diff < 0]#[price_diff < 0]
+A = rep(0,78413)
+A[idx] = 1
+A[jdx] = 1
+D = rep(0,78413)
+D[idx] = 1
+D[jdx] = -1
+S = abs(cpch-4)
+Ai = A[2:78413] #Ai = 1: price changed in the i_th trade
+Aim1 = A[1:78412]
+Di = D[2:78413] #Di = 1: price rose in the i_th trade
+Dim1 = D[1:78412]
+Si = S[2:78413] #Si: pch
+Sim1 = S[1:78412]
+
+m2 = glm(Ai~Aim1, family = "binomial")
+summary(m2)
+
+di = Di[Ai == 1]
+dim1 = Dim1[Ai == 1]
+di = (di+abs(di)) / 2
+m3 = glm(di~dim1, family = "binomial")
+summary(m3)
+
+#si = Si[Di == 1]
+#sim1 = Sim1[(Di == 1)]
+#m4 = GeoSize(si, sim1)
+##Error in solve.default(Hessian) : 
+##system is computationally singular: reciprocal condition number = 0
+#summary(m4)
+
+#nsi = Si[Di == -1]
+#nsim1 = Sim1[Di == -1]
+#m5 = GeoSize(nsi, nsim1)
+#Error in solve.default(Hessian) : 
+#system is computationally singular: reciprocal condition number = 0
+#summary(m5)
