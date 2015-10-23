@@ -29,8 +29,7 @@ ist = 3600*9 + 30*60 #market open
 end = 3600*16 #market close
 idx = c(1:length(sec))[sec < ist]
 jdx = c(1:length(sec))[sec > end]
-sec = sec[-c(idx,jdx)] #normal trading hours
-price_diff = price_diff[sec]
+price_diff = price_diff[(idx[length(idx)]+1):(jdx[1]-1)]
 plot(price_diff, type = "l")
 
 #(b)
