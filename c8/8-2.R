@@ -16,12 +16,17 @@
 #
 
 require(MTS)
-da = read.table("data/m-gs1n10.txt", header = TRUE)
+
+da = read.table("data/m-gs1n10.txt", header = T)
 attach(da)
-c1=diff(gs1)
-c2=diff(gs10)
-y=data.frame(cbind(c1,c2))
-ord.choice=VARorder(y,maxp=12)
-var6.fit=VAR(y,p=6)
+y = data.frame(cbind(diff(gs1), diff(gs10)))
+# FIXME
+VARorder(y, 12)
+var6.fit = VAR(y, 6)
+var6.fit = refVAR(var6.fit, thres = 1.96)
 MTSdiag(var6.fit)
-vma11.fit=VMAs(y,malags=c(1,2,3,5,7,11))
+VMAorder(y)
+#vma11.fit = VMA(y, 11)
+vma11.fit = VMAs(y, c(1, 3, 5, 7, 11))
+MTSdiag(vma11.fit)
+

@@ -14,11 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-da = read.table("data/m-mrk2vw.txt", header = TRUE)
-for( i in 2:7){x[i]= mean(da[,i])}
-x
-cov(da[,2:7])
-cor(da[,2:7])
-y=data.frame(cbind(MRK,JNJ,GE,GM,F,VW))
-ccm(y,lag=6,level=T)
-mq(y,lag=6)
+
+require(MTS)
+
+da = read.table("data/m-mrk2vw.txt", header = T)
+apply(da[, 2:7], 2, mean)
+apply(da[, 2:7], 2, sd)
+cov(da[, 2:7])
+cor(da[, 2:7])
+mq(da[, 2:7], 6)
+
