@@ -16,7 +16,13 @@
 #
 
 require(MTS)
-da = read.table("data/m-gs1n10.txt", header = TRUE)
+
+da = read.table("data/m-gs1n10.txt", header = T)
 attach(da)
-y=data.frame(gs1,gs10)
-varma.fit=VARMA(y,p=1,q=9)
+y = cbind(log(gs1), log(gs10))
+# FIXME
+VARorder(y, 12)
+m1 = VARMA(y, 1, 9)
+m1 = refVARMA(m1)
+MTSdiag(m1)
+
