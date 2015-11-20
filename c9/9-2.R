@@ -15,14 +15,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-da = read.table("data/m-fac-ex-9008.txt", header = T)
-dim(da)
-xmtx = cbind(rep(1, 228), da[, 14])
-rtn = as.matrix(da[, 1:13])
-xit.hat = solve(t(xmtx) %*% xmtx) %*% (t(xmtx) %*% rtn)
-beta.hat = t(xit.hat[2, ])
-E.hat = rtn - xmtx %*% xit.hat
-D.hat = diag(t(E.hat) %*% E.hat / (228 - 2))
-r.square = 1 - (228 - 2) * D.hat / diag(t(rtn) %*% rtn)
-t(rbind(beta.hat, sqrt(D.hat), r.square))
+da = read.table("data/m-mrk2vw.txt", header = T)
+m1 = princomp(da[, 2:7])
+summary(m1)
+m1$loadings
+m2 = princomp(da[, 2:7], cor = T)
+summary(m2)
+m2$loadings
+# FIXME
+m3 = factanal(da[, 2:7], 2)
+m3$loadings
 

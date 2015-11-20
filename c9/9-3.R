@@ -14,24 +14,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-da=read.table("data/m-excess-c10sp-9003.txt",header=TRUE)
-head(da)
+
+da = read.table("data/m-excess-c10sp-9003.txt", header = T)
 dim(da)
-rtn=da[,1:10]
-rtn=as.matrix(rtn)
-xmtx=cbind(rep(1,168),da[,11])
-xit.hat=qr.solve(xmtx,rtn)
-beta.hat=xit.hat[2,]
-E.hat=rtn-xmtx%*%xit.hat
-D.hat=diag(crossprod(as.matrix(E.hat))/(168-2))
-r.squre=1-(168-2)*D.hat/diag(t(as.matrix(rtn))%*%as.matrix(rtn))
-t(rbind(beta.hat,sqrt(D.hat),r.squre))
-opt=t(rbind(beta.hat,sqrt(D.hat),r.squre))
-par(mfcol=c(2,1))
-barplot(opt[,1],main = 'Beta-hat')
-barplot(opt[,3],main = 'R-squre')
-cov.model=var(da[,11])*(beta.hat%*%t(beta.hat))+diag(D.hat)
-sd.model=sqrt(diag(cov.model))
-corr.model=cov.model/outer(sd.model,sd.model)
-corr.model
-cor(rtn)
+xmtx = cbind(rep(1, 168), da[, 11])
+rtn = as.matrix(da[, 1:10])
+xit.hat = solve(t(xmtx) %*% xmtx) %*% (t(xmtx) %*% rtn)
+beta.hat = t(xit.hat[2, ])
+E.hat = rtn - xmtx %*% xit.hat
+D.hat = diag(t(E.hat) %*% E.hat / (168 - 2))
+r.square = 1 - (168 - 2) * D.hat / diag(t(rtn) %*% rtn)
+t(rbind(beta.hat, sqrt(D.hat), r.square))
+par(mfcol = c(1, 2))
+barplot(beta.hat, horiz = T, main = 'Beta values')
+barplot(r.square, horiz = T, main = 'R-square')
+cov.r = var(da[, 11]) * (t(beta.hat) %*% beta.hat) + diag(D.hat)
+w.gmin.model = solve(cov.r) %*% rep(1, nrow(cov.r))
+w.gmin.model = w.gmin.model / sum(w.gmin.model)
+t(w.gmin.model)
+w.gmin.data = solve(var(rtn)) %*% rep(1, nrow(cov.r))
+w.gmin.data = w.gmin.data / sum(w.gmin.data)
+t(w.gmin.data)
+
