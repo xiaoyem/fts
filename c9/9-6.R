@@ -14,9 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-da=read.table("data/m-excess-c10sp-9003.txt",header = TRUE)
-rtn=da[,1:10]
-stata.factor=factanal(rtn,factors = 3,method='mle')
-stata.factor
-stata.factor1=factanal(rtn,factors = 3,method='mle',rotation='varimax')
-loadings(stata.factor1)
+
+da = read.table("data/m-excess-c10sp-9003.txt", header = T)
+m1 = factanal(da[, 1:10], 3)
+m1
+plot(m1$loadings)
+

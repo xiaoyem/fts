@@ -15,28 +15,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+require(MTS)
+
+da = read.table("data/m-fedip.txt", header = T)
+y = cbind(diff(da[, 3]), diff(da[, 4]))
+VARorder(y)
+m1 = VAR(y, 2)
+res = m1$residuals[424:591, 1:2]
 da = read.table("data/m-excess-c10sp-9003.txt", header = T)
-dim(da)
-xmtx = cbind(rep(1, 168), da[, 11])
+xmtx = cbind(rep(1, 168), res)
 rtn = as.matrix(da[, 1:10])
 xit.hat = solve(t(xmtx) %*% xmtx) %*% (t(xmtx) %*% rtn)
-beta.hat = t(xit.hat[2, ])
+beta.hat = t(xit.hat[2:3, ])
 E.hat = rtn - xmtx %*% xit.hat
-D.hat = diag(t(E.hat) %*% E.hat / (168 - 2))
-r.square = 1 - (168 - 2) * D.hat / diag(t(rtn) %*% rtn)
-t(rbind(beta.hat, sqrt(D.hat), r.square))
-par(mfcol = c(1, 2))
-barplot(beta.hat, horiz = T, main = 'Beta values')
-barplot(r.square, horiz = T, main = 'R-square')
-cov.model = var(da[, 11]) * (t(beta.hat) %*% beta.hat) + diag(D.hat)
+D.hat = diag(t(E.hat) %*% E.hat / (168 - 3))
+r.square = 1 - (168 - 3) * D.hat / diag(t(rtn) %*% rtn)
+cov.model = beta.hat %*% var(res) %*% t(beta.hat) + diag(D.hat)
 sd.model = sqrt(diag(cov.model))
 corr.model = cov.model / outer(sd.model, sd.model)
 corr.model
-cor(rtn)
-w.gmin.model = solve(cov.model) %*% rep(1, nrow(cov.model))
-w.gmin.model = w.gmin.model / sum(w.gmin.model)
-t(w.gmin.model)
-w.gmin.data = solve(var(rtn)) %*% rep(1, nrow(cov.model))
-w.gmin.data = w.gmin.data / sum(w.gmin.data)
-t(w.gmin.data)
 
