@@ -33,7 +33,7 @@ da5 = data.frame(date, da5)
 source("c5/hfrtn.R")
 hfrtn = hfrtn(rbind(da1, da2, da3, da4, da5), 5, collapsed = F, averaged = F)
 par(mfrow = c(2, 1))
-plot(hfrtn$rtn,   type = 'l', main = '5-minute intraday returns', ylab = 'returns');
-plot(hfrtn$price, type = 'l', main = 'price',                     ylab = 'price');
+plot(hfrtn$rtn,   type = 'l', main = '5-minute intraday returns', ylab = 'returns')
+plot(hfrtn$price, type = 'l', main = 'price',                     ylab = 'price')
 Box.test(hfrtn$rtn, lag = 10, type = 'Ljung')
 

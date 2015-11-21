@@ -14,30 +14,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-da=read.table("data/m-excess-c10sp-9003.txt",header = TRUE)
-head(da)
-dim(da)
-drug=c(rep(1,4),rep(0,6))
-auto=c(rep(0,4),rep(1,2),rep(0,4))
-oil=c(rep(0,6),rep(1,4))
-beta=cbind(drug,auto,oil)
-beta
-rtn=da[,1:10]
-rtn=t(rtn)
-F.hat.o=solve(crossprod(beta))%*%t(beta)%*%rtn
-E.hat.o=rtn-beta%*%F.hat.o
-diagD.hat=apply(E.hat.o,1,var)
-Dinv.hat=diag(diagD.hat^(-1))
-Hmtx=solve(t(beta)%*%Dinv.hat%*%beta)%*%t(beta)%*%Dinv.hat
-F.hat=Hmtx%*%rtn
-F.hat=t(F.hat)
+
+da = read.table("data/m-excess-c10sp-9003.txt", header = T)
+drug = c(rep(1, 4), rep(0, 6))
+auto = c(rep(0, 4), 1, 1, rep(0, 4))
+oil  = c(rep(0, 6), rep(1, 4))
+beta = cbind(drug, auto, oil)
+rtn = t(da[, 1:10])
+F.hat.o = solve(t(beta) %*% beta) %*% t(beta) %*% rtn
+E.hat.o = rtn - beta %*% F.hat.o
+diagD.hat.o = apply(E.hat.o, 1, var)
+Dinv.hat = diag(diagD.hat.o ^ (-1))
+Hmtx = solve(t(beta) %*% Dinv.hat %*% beta) %*% t(beta) %*% Dinv.hat
+F.hat.g = Hmtx %*% rtn
+F.hat.gt = t(F.hat.g)
+E.hat.g = rtn - beta %*% F.hat.g
+diagD.hat.g = apply(E.hat.g, 1, var)
 t(Hmtx)
-cov.model=beta%*%var(F.hat)%*%t(beta)+diag(diagD.hat)
-sd.model=sqrt(diag(cov.model))
-corr.model=cov.model/outer(sd.model,sd.model)
-print(corr.model,digits = 1,width=2)
-dim(F.hat)
-par(mfcol=c(3,1))
-plot(1:168,F.hat[,1],type='l',main = 'Factor realization: Big drug companies')
-plot(1:168,F.hat[,2],type='l',main = 'Auto industry')
-plot(1:168,F.hat[,3],type='l',main = 'Oil companies')
+cov.model = beta %*% var(F.hat.gt) %*% t(beta) + diag(diagD.hat.g)
+sd.model = sqrt(diag(cov.model))
+corr.model = cov.model / outer(sd.model, sd.model)
+corr.model
+par(mfcol = c(3, 1))
+plot(F.hat.gt[, 1], type = 'l', main = '(a) Factor realization: Big drug companies')
+plot(F.hat.gt[, 2], type = 'l', main = '(b) Auto industry')
+plot(F.hat.gt[, 3], type = 'l', main = '(c) Oil companies')
+

@@ -18,7 +18,7 @@
 da = read.table("data/m-gm3dx7508.txt", header = T)
 lsp = log(1 + da[, 5])
 r = mean(lsp) * 12
-cat("r =", r, "\n");
+cat("r =", r, "\n")
 V = exp(r * (2008 - 1975 + 1))
-cat("V =", V, "\n");
+cat("V =", V, "\n")
 

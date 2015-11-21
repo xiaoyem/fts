@@ -36,5 +36,5 @@ Y1 = y[length(y)] + mp$pred[1]
 Y2 = Y1 + mp$pred[2]
 Y3 = Y2 + mp$pred[3]
 Y4 = Y3 + mp$pred[4]
-cat("prediction =", Y1, Y2, Y3, Y4, "\n");
+cat("prediction =", Y1, Y2, Y3, Y4, "\n")
 

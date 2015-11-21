@@ -25,7 +25,7 @@ summary(m1)
 yp = da[961:996, 2]
 xp = cbind(da[960:995, 2], da[959:994, 2], da[958:993, 2])
 mse = sum((yp - predict(m1, xp)) ^ 2) / 36
-cat("mse =", mse, "\n");
+cat("mse =", mse, "\n")
 # FIXME
 yd = ifelse(da[4:960, 2] > 0, 1, 0)
 xx = cbind(xx, ifelse(da[3:959, 2] > 0, 1, 0), ifelse(da[2:958, 2] > 0, 1, 0),
@@ -36,5 +36,5 @@ ypd = ifelse(da[961:996, 2] > 0, 1, 0)
 xp = cbind(xp, ifelse(da[960:995, 2] > 0, 1, 0), ifelse(da[959:994, 2] > 0, 1, 0),
 	ifelse(da[958:993, 2] > 0, 1, 0))
 mse = sum((ypd - ifelse(predict(m1, xp) > 0.5, 1, 0)) ^ 2) / 36
-cat("mse =", mse, "\n");
+cat("mse =", mse, "\n")
 

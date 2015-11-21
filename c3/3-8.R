@@ -35,7 +35,7 @@ m3 = garchFit(~ arma(0, 0) + garch(1, 1), data = gm, cond.dist = "std", trace = 
 summary(m3)
 predict(m3, 6)
 # FIXME
-cat("tt =", (9.41762 - 6) / 2.96756, "\n");
+cat("tt =", (9.41762 - 6) / 2.96756, "\n")
 m4 = ugarchfit(ugarchspec(variance.model = list(model = "eGARCH", garchOrder = c(1, 1)),
 	mean.model = list(armaOrder = c(0, 0))), gm / 100)
 show(m4)

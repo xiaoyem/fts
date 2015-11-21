@@ -18,8 +18,8 @@
 da = read.table("data/mmm9912-dtp.txt", header = F)
 T = dim(da)[1]
 # FIXME
-icnt = 0;
-prev = 0;
+icnt = 0
+prev = 0
 while (icnt < T) {
 	idx = c(1:T)[da[, 1] == da[icnt + 1, 1]]
 	for (i in (icnt + 1):(icnt + length(idx))) {

@@ -14,12 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-require(fGarch)
+
 da = read.table("data/mmm9912-dtp.txt", header = F)
 T = dim(da)[1]
 # FIXME
-icnt = 0;
-prev = 0;
+icnt = 0
+prev = 0
 while (icnt < T) {
 	idx = c(1:T)[da[, 1] == da[icnt + 1, 1]]
 	for (i in (icnt + 1):(icnt + length(idx))) {
@@ -31,9 +31,8 @@ while (icnt < T) {
 source("c5/hfrtn.R")
 hfrtn = hfrtn(da, 5)
 par(mfrow = c(2, 1))
-plot(hfrtn$rtn,   type = 'l', main = '5-minute intraday returns', ylab = 'returns');
-
-plot(hfrtn$price, type = 'l', main = 'price',                     ylab = 'price');
+plot(hfrtn$rtn,   type = 'l', main = '5-minute intraday returns', ylab = 'returns')
+plot(hfrtn$price, type = 'l', main = 'price',                     ylab = 'price')
 Box.test(hfrtn$rtn, lag = 10, type = 'Ljung')
 # FIXME
 vol = NULL
@@ -41,6 +40,4 @@ for (i in 0:21) {
 	vol = c(vol, sum(hfrtn$rtn[(77 * i + 1):(77 * i + 77)] ^ 2))
 }
 plot(vol, type = 'l', main = 'Under independence', xlab = 'day')
-m1=garchFit(hfrtn$rtn~arma(1,0)+garch(1,1),data=hfrtn$rtn)
-vol=m1@sigma.t
-plot(vol,type='l')
+
