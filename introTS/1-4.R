@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015 by Gaohang Wu.
+# Copyright (c) 2015-2016 by Gaohang Wu.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,22 +19,24 @@ require(fBasics)
 
 da = read.table("introTS/d-axp3dx-0111.txt", header = T)
 T = length(da[, 2])
-#(a)
-s1 = skewness(log(da[, 2] + 1))
-t1 = s1 / sqrt(6 / T)
-p1 = 2 * (1 - pnorm(t1))
-if (p1 > 0.05) {
-	cat("p-value =", p1, " > 0.05, cannot reject the null hypothesis\n")
+# (a)
+# \frac{\hat{S}(r)}{\sqrt{6/T}}
+s3 = skewness(log(1 + da[, 2]))
+t3 = s3 / sqrt(6 / T)
+p3 = 2 * (1 - pnorm(t3))
+if (p3 > 0.05) {
+	cat("p-value =", p3, " > 0.05, cannot reject the null hypothesis\n")
 } else {
-	cat("p-value =", p1, " <= 0.05, reject the null hypothesis\n")
+	cat("p-value =", p3, " <= 0.05, reject the null hypothesis\n")
 }
-#(b)
-s2 = kurtosis(log(da[, 2] + 1))
-t2 = s2 / sqrt(24 / T)
-p2 = 2 * (1 - pnorm(t2))
-if (p2 > 0.05) {
-	cat("p-value =", p2, " > 0.05, cannot reject the null hypothesis\n")
+# (b)
+# \frac{\hat{K}(r) - 3}{\sqrt{24/T}}
+s4 = kurtosis(log(1 + da[, 2]))
+t4 = s4 / sqrt(24 / T)
+p4 = 2 * (1 - pnorm(t4))
+if (p4 > 0.05) {
+	cat("p-value =", p4, " > 0.05, cannot reject the null hypothesis\n")
 } else {
-	cat("p-value =", p2, " <= 0.05, reject the null hypothesis\n")
+	cat("p-value =", p4, " <= 0.05, reject the null hypothesis\n")
 }
 
