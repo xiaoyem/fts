@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015 by Yuchao Zhao, Xiaoye Meng.
+# Copyright (c) 2015-2016 by Yuchao Zhao, Xiaoye Meng.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,8 +19,13 @@ require(fBasics)
 
 da = read.table("data/d-3stocks9908.txt", header = T)
 rtn = da[, 2:4]
+# (a)
 apply(rtn * 100, 2, basicStats)
+# (b)
 lrtn = log(1 + rtn)
+# (c)
 apply(lrtn * 100, 2, basicStats)
+# (d)
+# \frac{\sqrt{T}\hat{\mu}_x}{\hat{\sigma}_x}
 apply(lrtn, 2, t.test)
 

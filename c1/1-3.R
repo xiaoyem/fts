@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015 by Yuchao Zhao, Xiaoye Meng.
+# Copyright (c) 2015-2016 by Yuchao Zhao, Xiaoye Meng.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,8 +17,10 @@
 
 da = read.table("data/m-gm3dx7508.txt", header = T)
 lsp = log(1 + da[, 5])
+# (a)
 r = mean(lsp) * 12
 cat("r =", r, "\n")
+# (b)
 V = exp(r * (2008 - 1975 + 1))
 cat("V =", V, "\n")
 

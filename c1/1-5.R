@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015 by Yuchao Zhao, Xiaoye Meng.
+# Copyright (c) 2015-2016 by Yuchao Zhao, Xiaoye Meng.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,17 +18,20 @@
 require(fBasics)
 
 da = read.table("data/d-caus.txt", header = T)
+db = read.table("data/d-useu.txt", header = T)
+dc = read.table("data/d-jpus.txt", header = T)
+dd = read.table("data/d-usuk.txt", header = T)
+# (a)
 caus = diff(log(da$rate))
+useu = diff(log(db$Value))
+jpus = diff(log(dc$value))
+usuk = diff(log(dd$value))
+# (b)
 basicStats(caus)
-da = read.table("data/d-useu.txt", header = T)
-useu = diff(log(da$Value))
 basicStats(useu)
-da = read.table("data/d-jpus.txt", header = T)
-jpus = diff(log(da$value))
 basicStats(jpus)
-da = read.table("data/d-usuk.txt", header = T)
-usuk = diff(log(da$value))
 basicStats(usuk)
+# (d)
 d = density(useu)
 plot(d$x, d$y, type = 'l', xlab = 'log-rtn', ylab = 'density')
 
